@@ -14,6 +14,8 @@ namespace Werkcollege04.Oef01.Data
         {
         }
 
-        public DbSet<Werkcollege04.Oef01.Models.Employee> Employee { get; set; }
+        public DbSet<Employee> Employees { get; set; }
+
+        public DbSet<Department> Departments { get; set; }
     }
 }
