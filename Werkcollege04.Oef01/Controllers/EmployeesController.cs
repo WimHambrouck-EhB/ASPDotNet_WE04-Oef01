@@ -61,7 +61,7 @@ namespace Werkcollege04.Oef01.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Empno,Name,Job,Mgr,Deptno,Hiredate,Salary,Commission")] Employee employee)
+        public async Task<IActionResult> Create([Bind("Name,Job,Mgr,Deptno,Hiredate,Salary,Commission")] Employee employee)
         {
             if (ModelState.IsValid)
             {
@@ -87,6 +87,8 @@ namespace Werkcollege04.Oef01.Controllers
             {
                 return NotFound();
             }
+
+            await CreateSelectLists();
             return View(employee);
         }
 
@@ -95,7 +97,7 @@ namespace Werkcollege04.Oef01.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Empno,Name,Job,Hiredate,Salary,Commission")] Employee employee)
+        public async Task<IActionResult> Edit(int id, [Bind("Empno,Name,Job,Mgr,Deptno,Hiredate,Salary,Commission")] Employee employee)
         {
             if (id != employee.Empno)
             {
@@ -122,6 +124,8 @@ namespace Werkcollege04.Oef01.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
+
+            await CreateSelectLists();
             return View(employee);
         }
 
