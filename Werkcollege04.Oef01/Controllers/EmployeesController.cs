@@ -144,6 +144,11 @@ namespace Werkcollege04.Oef01.Controllers
                 return NotFound();
             }
 
+            if (await _context.Employees.AnyAsync(e => e.Mgr == employee.Empno))
+            {
+                return View("DeleteWithFK", employee);
+            }
+
             return View(employee);
         }
 
