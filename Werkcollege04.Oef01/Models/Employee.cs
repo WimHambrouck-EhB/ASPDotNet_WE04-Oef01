@@ -12,11 +12,16 @@ namespace Werkcollege04.Oef01.Models
     {
         [Key]
         public int Empno { get; set; }
+
         [Column("Ename")]
+        [Required]
+        [DisplayFormat(NullDisplayText = "No manager")]
         public string Name { get; set; }
         public Job Job { get; set; }
+
         [ForeignKey(nameof(Manager))]
         public int? Mgr { get; set; }
+
         public virtual Employee Manager { get; set; }
 
         [DataType(DataType.Date)]
@@ -36,6 +41,5 @@ namespace Werkcollege04.Oef01.Models
         [ForeignKey(nameof(Department))]
         public virtual int Deptno { get; set; }
         public virtual Department Department { get; set; }
-
     }
 }

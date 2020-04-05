@@ -10,7 +10,7 @@ using Werkcollege04.Oef01.Data;
 namespace Werkcollege04.Oef01.Migrations
 {
     [DbContext(typeof(Werkcollege04Oef01Context))]
-    [Migration("20200405100731_Initial-Migration")]
+    [Migration("20200405203351_Initial-Migration")]
     partial class InitialMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -56,6 +56,7 @@ namespace Werkcollege04.Oef01.Migrations
                     b.Property<int?>("Mgr");
 
                     b.Property<string>("Name")
+                        .IsRequired()
                         .HasColumnName("Ename");
 
                     b.Property<double>("Salary")

@@ -54,6 +54,7 @@ namespace Werkcollege04.Oef01.Migrations
                     b.Property<int?>("Mgr");
 
                     b.Property<string>("Name")
+                        .IsRequired()
                         .HasColumnName("Ename");
 
                     b.Property<double>("Salary")

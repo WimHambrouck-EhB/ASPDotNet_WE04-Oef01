@@ -28,7 +28,7 @@ namespace Werkcollege04.Oef01.Migrations
                 {
                     Empno = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    Ename = table.Column<string>(nullable: true),
+                    Ename = table.Column<string>(nullable: false),
                     Job = table.Column<int>(nullable: false),
                     Mgr = table.Column<int>(nullable: true),
                     Hiredate = table.Column<DateTime>(nullable: false),
