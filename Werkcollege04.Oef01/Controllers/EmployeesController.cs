@@ -44,9 +44,15 @@ namespace Werkcollege04.Oef01.Controllers
         }
 
         // GET: Employees/Create
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
+            ViewBag.Departments = await DepartmentSelectList();
             return View();
+        }
+
+        private async Task<SelectList> DepartmentSelectList()
+        {
+            return new SelectList(await _context.Departments.ToListAsync(), nameof(Department.Deptno), nameof(Department.Name));
         }
 
         // POST: Employees/Create
@@ -54,7 +60,7 @@ namespace Werkcollege04.Oef01.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Empno,Name,Job,Hiredate,Salary,Commission")] Employee employee)
+        public async Task<IActionResult> Create([Bind("Empno,Name,Job,Deptno,Hiredate,Salary,Commission")] Employee employee)
         {
             if (ModelState.IsValid)
             {
@@ -62,6 +68,8 @@ namespace Werkcollege04.Oef01.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+
+            ViewBag.Departments = await DepartmentSelectList();
             return View(employee);
         }
 
