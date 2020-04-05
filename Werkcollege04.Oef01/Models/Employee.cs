@@ -21,9 +21,15 @@ namespace Werkcollege04.Oef01.Models
 
         [DataType(DataType.Date)]
         public DateTime Hiredate { get; set; }
+        
         [Column("Sal")]
+        [DataType(DataType.Currency)]
+        [Range(1000, double.MaxValue, ErrorMessage = "Salary must be at least 1000")]
         public double Salary { get; set; }
+
         [Column("Comm")]
+        [DataType(DataType.Currency)]
+        [Range(0, double.MaxValue, ErrorMessage = "Commission cannot be negative")]
         public double Commission { get; set; }
 
         [Display(Name = nameof(Department))]
