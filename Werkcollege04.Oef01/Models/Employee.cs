@@ -15,7 +15,7 @@ namespace Werkcollege04.Oef01.Models
         [Column("Ename")]
         public string Name { get; set; }
         public Job Job { get; set; }
-        [ForeignKey("Manager")]
+        [ForeignKey(nameof(Manager))]
         public int? Mgr { get; set; }
         public virtual Employee Manager { get; set; }
 
@@ -26,7 +26,8 @@ namespace Werkcollege04.Oef01.Models
         [Column("Comm")]
         public double Commission { get; set; }
 
-        [ForeignKey("Department")]
+        [Display(Name = nameof(Department))]
+        [ForeignKey(nameof(Department))]
         public virtual int Deptno { get; set; }
         public virtual Department Department { get; set; }
 

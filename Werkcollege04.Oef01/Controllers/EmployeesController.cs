@@ -46,13 +46,14 @@ namespace Werkcollege04.Oef01.Controllers
         // GET: Employees/Create
         public async Task<IActionResult> Create()
         {
-            ViewBag.Departments = await DepartmentSelectList();
+            await CreateSelectLists();
             return View();
         }
 
-        private async Task<SelectList> DepartmentSelectList()
+        private async Task CreateSelectLists()
         {
-            return new SelectList(await _context.Departments.ToListAsync(), nameof(Department.Deptno), nameof(Department.Name));
+            ViewBag.Departments = new SelectList(await _context.Departments.ToListAsync(), nameof(Department.Deptno), nameof(Department.Name));
+            ViewBag.Managers = new SelectList(await _context.Employees.Where(e => e.Job == Job.Manager).ToListAsync(), nameof(Employee.Empno), nameof(Employee.Name));
         }
 
         // POST: Employees/Create
@@ -60,7 +61,7 @@ namespace Werkcollege04.Oef01.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Empno,Name,Job,Deptno,Hiredate,Salary,Commission")] Employee employee)
+        public async Task<IActionResult> Create([Bind("Empno,Name,Job,Mgr,Deptno,Hiredate,Salary,Commission")] Employee employee)
         {
             if (ModelState.IsValid)
             {
@@ -69,7 +70,7 @@ namespace Werkcollege04.Oef01.Controllers
                 return RedirectToAction(nameof(Index));
             }
 
-            ViewBag.Departments = await DepartmentSelectList();
+            await CreateSelectLists();
             return View(employee);
         }
 
