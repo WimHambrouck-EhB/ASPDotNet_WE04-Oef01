@@ -28,7 +28,7 @@ namespace Werkcollege04.Oef01
             services.AddControllersWithViews();
 
             services.AddDbContext<Werkcollege04Oef01Context>(options =>
-                    options.UseSqlServer(Configuration.GetConnectionString("Werkcollege04Oef01Context")));
+                    options.UseSqlServer(Configuration.GetConnectionString("Werkcollege04Oef01Context")).EnableSensitiveDataLogging());
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

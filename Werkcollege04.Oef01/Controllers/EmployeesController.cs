@@ -22,7 +22,7 @@ namespace Werkcollege04.Oef01.Controllers
         // GET: Employees
         public async Task<IActionResult> Index()
         {
-            var werkcollege04Oef01Context = _context.Employee.Include(e => e.Department).Include(e => e.Manager);
+            var werkcollege04Oef01Context = _context.Employees.Include(e => e.Department).Include(e => e.Manager);
             return View(await werkcollege04Oef01Context.ToListAsync());
         }
 
@@ -34,7 +34,7 @@ namespace Werkcollege04.Oef01.Controllers
                 return NotFound();
             }
 
-            var employee = await _context.Employee
+            var employee = await _context.Employees
                 .Include(e => e.Department)
                 .Include(e => e.Manager)
                 .FirstOrDefaultAsync(m => m.Empno == id);
@@ -49,8 +49,8 @@ namespace Werkcollege04.Oef01.Controllers
         // GET: Employees/Create
         public IActionResult Create()
         {
-            ViewData["Deptno"] = new SelectList(_context.Set<Department>(), "Deptno", "Deptno");
-            ViewData["Mgr"] = new SelectList(_context.Employee, "Empno", "Name");
+            ViewData["Deptno"] = new SelectList(_context.Set<Department>(), nameof(Department.Deptno), nameof(Department.Name));
+            ViewData["Mgr"] = new SelectList(_context.Employees.Where(e => e.Job == Job.Manager), nameof(Employee.Empno), nameof(Employee.Name));
             return View();
         }
 
@@ -67,8 +67,8 @@ namespace Werkcollege04.Oef01.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["Deptno"] = new SelectList(_context.Set<Department>(), "Deptno", "Deptno", employee.Deptno);
-            ViewData["Mgr"] = new SelectList(_context.Employee, "Empno", "Name", employee.Mgr);
+            ViewData["Deptno"] = new SelectList(_context.Set<Department>(), nameof(Department.Deptno), nameof(Department.Name), employee.Deptno);
+            ViewData["Mgr"] = new SelectList(_context.Employees.Where(e => e.Job == Job.Manager), nameof(Employee.Empno), nameof(Employee.Name), employee.Mgr);
             return View(employee);
         }
 
@@ -80,13 +80,13 @@ namespace Werkcollege04.Oef01.Controllers
                 return NotFound();
             }
 
-            var employee = await _context.Employee.FindAsync(id);
+            var employee = await _context.Employees.FindAsync(id);
             if (employee == null)
             {
                 return NotFound();
             }
-            ViewData["Deptno"] = new SelectList(_context.Set<Department>(), "Deptno", "Deptno", employee.Deptno);
-            ViewData["Mgr"] = new SelectList(_context.Employee, "Empno", "Name", employee.Mgr);
+            ViewData["Deptno"] = new SelectList(_context.Set<Department>(), nameof(Department.Deptno), nameof(Department.Name), employee.Deptno);
+            ViewData["Mgr"] = new SelectList(_context.Employees.Where(e => e.Job == Job.Manager), nameof(Employee.Empno), nameof(Employee.Name), employee.Mgr);
             return View(employee);
         }
 
@@ -122,8 +122,8 @@ namespace Werkcollege04.Oef01.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["Deptno"] = new SelectList(_context.Set<Department>(), "Deptno", "Deptno", employee.Deptno);
-            ViewData["Mgr"] = new SelectList(_context.Employee, "Empno", "Name", employee.Mgr);
+            ViewData["Deptno"] = new SelectList(_context.Set<Department>(), nameof(Department.Deptno), nameof(Department.Name), employee.Deptno);
+            ViewData["Mgr"] = new SelectList(_context.Employees.Where(e => e.Job == Job.Manager), nameof(Employee.Empno), nameof(Employee.Name), employee.Mgr);
             return View(employee);
         }
 
@@ -135,13 +135,19 @@ namespace Werkcollege04.Oef01.Controllers
                 return NotFound();
             }
 
-            var employee = await _context.Employee
+            var employee = await _context.Employees
                 .Include(e => e.Department)
                 .Include(e => e.Manager)
                 .FirstOrDefaultAsync(m => m.Empno == id);
             if (employee == null)
             {
                 return NotFound();
+            }
+
+            // check of deze employee manager is van anderen
+            if (await _context.Employees.AnyAsync(e => e.Mgr == employee.Empno))
+            {
+                return View("DeleteWithFK", employee);
             }
 
             return View(employee);
@@ -152,15 +158,15 @@ namespace Werkcollege04.Oef01.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var employee = await _context.Employee.FindAsync(id);
-            _context.Employee.Remove(employee);
+            var employee = await _context.Employees.FindAsync(id);
+            _context.Employees.Remove(employee);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool EmployeeExists(int id)
         {
-            return _context.Employee.Any(e => e.Empno == id);
+            return _context.Employees.Any(e => e.Empno == id);
         }
     }
 }

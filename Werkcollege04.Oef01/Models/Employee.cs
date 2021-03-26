@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
+using Werkcollege04.Oef01.Attributes;
 
 namespace Werkcollege04.Oef01.Models
 {
@@ -11,7 +12,6 @@ namespace Werkcollege04.Oef01.Models
     public class Employee
     {
         [Key]
-        [Editable(false)]
         public int Empno { get; set; }
 
         [Column("Ename")]
@@ -20,7 +20,9 @@ namespace Werkcollege04.Oef01.Models
         public string Name { get; set; }
         public Job Job { get; set; }
 
+        [Display(Name = nameof(Manager))]
         [ForeignKey(nameof(Manager))]
+        [CompareNoMatch(nameof(Empno), ErrorMessage = "An employee cannot be their own manager")]
         public int? Mgr { get; set; }
 
         public Employee Manager { get; set; }

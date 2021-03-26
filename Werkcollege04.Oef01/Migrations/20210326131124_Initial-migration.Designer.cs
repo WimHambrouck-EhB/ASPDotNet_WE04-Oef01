@@ -10,8 +10,8 @@ using Werkcollege04.Oef01.Data;
 namespace Werkcollege04.Oef01.Migrations
 {
     [DbContext(typeof(Werkcollege04Oef01Context))]
-    [Migration("20210326130353_Initial-Migration")]
-    partial class InitialMigration
+    [Migration("20210326131124_Initial-migration")]
+    partial class Initialmigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
