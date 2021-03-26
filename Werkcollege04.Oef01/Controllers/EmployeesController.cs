@@ -22,7 +22,8 @@ namespace Werkcollege04.Oef01.Controllers
         // GET: Employees
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Employees.ToListAsync());
+            var werkcollege04Oef01Context = _context.Employees.Include(e => e.Department).Include(e => e.Manager);
+            return View(await werkcollege04Oef01Context.ToListAsync());
         }
 
         // GET: Employees/Details/5
@@ -34,6 +35,8 @@ namespace Werkcollege04.Oef01.Controllers
             }
 
             var employee = await _context.Employees
+                .Include(e => e.Department)
+                .Include(e => e.Manager)
                 .FirstOrDefaultAsync(m => m.Empno == id);
             if (employee == null)
             {
@@ -44,24 +47,19 @@ namespace Werkcollege04.Oef01.Controllers
         }
 
         // GET: Employees/Create
-        public async Task<IActionResult> Create()
+        public IActionResult Create()
         {
-            await CreateSelectLists();
+            ViewData["Deptno"] = new SelectList(_context.Set<Department>(), nameof(Department.Deptno), nameof(Department.Name));
+            ViewData["Mgr"] = new SelectList(_context.Employees.Where(e => e.Job == Job.Manager), nameof(Employee.Empno), nameof(Employee.Name));
             return View();
         }
 
-        private async Task CreateSelectLists()
-        {
-            ViewBag.Departments = new SelectList(await _context.Departments.ToListAsync(), nameof(Department.Deptno), nameof(Department.Name));
-            ViewBag.Managers = new SelectList(await _context.Employees.Where(e => e.Job == Job.Manager).ToListAsync(), nameof(Employee.Empno), nameof(Employee.Name));
-        }
-
         // POST: Employees/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
+        // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Name,Job,Mgr,Deptno,Hiredate,Salary,Commission")] Employee employee)
+        public async Task<IActionResult> Create([Bind("Empno,Name,Job,Mgr,Hiredate,Salary,Commission,Deptno")] Employee employee)
         {
             if (ModelState.IsValid)
             {
@@ -69,8 +67,8 @@ namespace Werkcollege04.Oef01.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-
-            await CreateSelectLists();
+            ViewData["Deptno"] = new SelectList(_context.Set<Department>(), nameof(Department.Deptno), nameof(Department.Name), employee.Deptno);
+            ViewData["Mgr"] = new SelectList(_context.Employees.Where(e => e.Job == Job.Manager), nameof(Employee.Empno), nameof(Employee.Name), employee.Mgr);
             return View(employee);
         }
 
@@ -87,17 +85,17 @@ namespace Werkcollege04.Oef01.Controllers
             {
                 return NotFound();
             }
-
-            await CreateSelectLists();
+            ViewData["Deptno"] = new SelectList(_context.Set<Department>(), nameof(Department.Deptno), nameof(Department.Name), employee.Deptno);
+            ViewData["Mgr"] = new SelectList(_context.Employees.Where(e => e.Job == Job.Manager), nameof(Employee.Empno), nameof(Employee.Name), employee.Mgr);
             return View(employee);
         }
 
         // POST: Employees/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
+        // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Empno,Name,Job,Mgr,Deptno,Hiredate,Salary,Commission")] Employee employee)
+        public async Task<IActionResult> Edit(int id, [Bind("Empno,Name,Job,Mgr,Hiredate,Salary,Commission,Deptno")] Employee employee)
         {
             if (id != employee.Empno)
             {
@@ -124,8 +122,8 @@ namespace Werkcollege04.Oef01.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-
-            await CreateSelectLists();
+            ViewData["Deptno"] = new SelectList(_context.Set<Department>(), nameof(Department.Deptno), nameof(Department.Name), employee.Deptno);
+            ViewData["Mgr"] = new SelectList(_context.Employees.Where(e => e.Job == Job.Manager), nameof(Employee.Empno), nameof(Employee.Name), employee.Mgr);
             return View(employee);
         }
 
@@ -138,12 +136,15 @@ namespace Werkcollege04.Oef01.Controllers
             }
 
             var employee = await _context.Employees
+                .Include(e => e.Department)
+                .Include(e => e.Manager)
                 .FirstOrDefaultAsync(m => m.Empno == id);
             if (employee == null)
             {
                 return NotFound();
             }
 
+            // check of deze employee manager is van anderen
             if (await _context.Employees.AnyAsync(e => e.Mgr == employee.Empno))
             {
                 return View("DeleteWithFK", employee);

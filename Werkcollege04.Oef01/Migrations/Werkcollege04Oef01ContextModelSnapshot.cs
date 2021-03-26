@@ -15,7 +15,7 @@ namespace Werkcollege04.Oef01.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "2.1.14-servicing-32113")
+                .HasAnnotation("ProductVersion", "3.1.13")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
@@ -23,13 +23,16 @@ namespace Werkcollege04.Oef01.Migrations
                 {
                     b.Property<int>("Deptno")
                         .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Location")
-                        .HasColumnName("Loc");
+                        .HasColumnName("Loc")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
-                        .HasColumnName("Dname");
+                        .HasColumnName("Dname")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Deptno");
 
@@ -40,25 +43,33 @@ namespace Werkcollege04.Oef01.Migrations
                 {
                     b.Property<int>("Empno")
                         .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<double>("Commission")
-                        .HasColumnName("Comm");
+                        .HasColumnName("Comm")
+                        .HasColumnType("float");
 
-                    b.Property<int>("Deptno");
+                    b.Property<int>("Deptno")
+                        .HasColumnType("int");
 
-                    b.Property<DateTime>("Hiredate");
+                    b.Property<DateTime>("Hiredate")
+                        .HasColumnType("datetime2");
 
-                    b.Property<int>("Job");
+                    b.Property<int>("Job")
+                        .HasColumnType("int");
 
-                    b.Property<int?>("Mgr");
+                    b.Property<int?>("Mgr")
+                        .HasColumnType("int");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnName("Ename");
+                        .HasColumnName("Ename")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<double>("Salary")
-                        .HasColumnName("Sal");
+                        .HasColumnName("Sal")
+                        .HasColumnType("float");
 
                     b.HasKey("Empno");
 
@@ -74,7 +85,8 @@ namespace Werkcollege04.Oef01.Migrations
                     b.HasOne("Werkcollege04.Oef01.Models.Department", "Department")
                         .WithMany()
                         .HasForeignKey("Deptno")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("Werkcollege04.Oef01.Models.Employee", "Manager")
                         .WithMany()

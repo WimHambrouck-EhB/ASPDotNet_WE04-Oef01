@@ -1,13 +1,11 @@
 ﻿@model Employee
 
 @{
-    ViewData["Title"] = "Unable to delete manager";
+    ViewData["Title"] = "Delete";
 }
 
-<h2>@ViewData["Title"]</h2>
-<p>Cannot delete employee @Model.Name, because they are manager of other employees. Assign those employees different managers (or delete them) first.</p>
+<h1>@ViewData["Title"]</h1>
+<h3>Cannot delete employee @Model.Name, because they are manager of other employees. Assign those employees different managers (or delete them) first.</h3>
 <div>
     <a asp-action="Index">Back to List</a>
 </div>
-
-

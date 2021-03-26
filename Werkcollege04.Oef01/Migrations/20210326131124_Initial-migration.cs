@@ -1,10 +1,9 @@
 ﻿using System;
-using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Werkcollege04.Oef01.Migrations
 {
-    public partial class InitialMigration : Migration
+    public partial class Initialmigration : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -13,7 +12,7 @@ namespace Werkcollege04.Oef01.Migrations
                 columns: table => new
                 {
                     Deptno = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     Dname = table.Column<string>(nullable: true),
                     Loc = table.Column<string>(nullable: true)
                 },
@@ -27,7 +26,7 @@ namespace Werkcollege04.Oef01.Migrations
                 columns: table => new
                 {
                     Empno = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     Ename = table.Column<string>(nullable: false),
                     Job = table.Column<int>(nullable: false),
                     Mgr = table.Column<int>(nullable: true),
