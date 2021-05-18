@@ -23,7 +23,7 @@ namespace Werkcollege04.Oef01
                 try
                 {
                     var context = services.GetRequiredService<Werkcollege04Oef01Context>();
-                    SeedDepartments.Initialize(context);
+                    SeedDeptsAndEmps.Initialize(context);
                 }
                 catch (Exception ex)
                 {
