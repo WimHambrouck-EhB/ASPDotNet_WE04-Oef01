@@ -1,0 +1,27 @@
+﻿@model Employee
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Edit</h1>
+<p>Cannot edit employee @Model.Name's job, because they are manager of one or more other employees.</p>
+<p>You can either remove @Model.Name as manager from all employees (affected employees will be reset to "No manager") or cancel the edit (changes to @Model.Name will not be saved).</p>
+<h6>What do you want to do?</h6>
+<form asp-action="EditWithFK" method="post">
+    <input type="submit" class="btn btn-primary" value="Remove from other employees." />
+    <a class="btn btn-primary" asp-action="Index">Cancel</a>
+
+    <input type="hidden" asp-for="Empno" />
+    <input type="hidden" asp-for="Name" />
+    <input type="hidden" asp-for="Job" />
+    <input type="hidden" asp-for="Mgr" />
+    <input type="hidden" asp-for="Hiredate" />
+    <input type="hidden" asp-for="Salary" />
+    <input type="hidden" asp-for="Commission" />
+    <input type="hidden" asp-for="Deptno" />
+</form>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
