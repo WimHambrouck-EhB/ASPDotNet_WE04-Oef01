@@ -136,44 +136,6 @@ namespace Werkcollege04.Oef01.Controllers
             return View(employee);
         }
 
-
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public async Task<IActionResult> EditWithFK([Bind("Empno,Name,Job,Mgr,Hiredate,Salary,Commission,Deptno")] Employee employee)
-        //{
-        //    // model should still be valid because no changes where made, but just in case someone fiddles with the post values
-        //    if (ModelState.IsValid)
-        //    {
-        //        var employees = _context.Employees.Where(e => e.Mgr == employee.Empno);
-        //        foreach (var emp in employees)
-        //        {
-        //            emp.Mgr = null;
-        //        }
-
-        //        try
-        //        {
-        //            _context.UpdateRange(employees);
-        //            _context.Update(employee);
-        //            await _context.SaveChangesAsync();
-        //        }
-        //        catch (DbUpdateConcurrencyException)
-        //        {
-        //            if (!EmployeeExists(employee.Empno))
-        //            {
-        //                return NotFound();
-        //            }
-        //            else
-        //            {
-        //                throw;
-        //            }
-        //        }
-        //        return RedirectToAction(nameof(Index));
-        //    }
-        //    ViewData["Deptno"] = new SelectList(_context.Set<Department>(), nameof(Department.Deptno), nameof(Department.Name), employee.Deptno);
-        //    ViewData["Mgr"] = new SelectList(_context.Employees.Where(e => e.Job == Job.Manager), nameof(Employee.Empno), nameof(Employee.Name), employee.Mgr);
-        //    return View("Edit", employee);
-        //}
-
         // GET: Employees/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {

@@ -8,7 +8,7 @@ namespace Werkcollege04.Oef01.Models
     public enum Job
     {
         Clerck,
-        Salesman,
+        Salesperson,
         Manager,
         Analyst,
         President
