@@ -10,6 +10,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Werkcollege04.Oef01.Data;
+using System.Globalization;
 
 namespace Werkcollege04.Oef01
 {
@@ -29,6 +30,14 @@ namespace Werkcollege04.Oef01
 
             services.AddDbContext<Werkcollege04Oef01Context>(options =>
                     options.UseSqlServer(Configuration.GetConnectionString("Werkcollege04Oef01Context")).EnableSensitiveDataLogging());
+
+            // workaround: request culture op US zetten, anders faalt de validatie op kommagetallen
+            // andere optie is eigen request mapping logica voorzien
+            services.Configure<RequestLocalizationOptions>(options =>
+            {
+                options.DefaultRequestCulture = new Microsoft.AspNetCore.Localization.RequestCulture("en-US");
+            }
+            );
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -44,6 +53,8 @@ namespace Werkcollege04.Oef01
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
+            app.UseRequestLocalization(); // workaround kommagetallen
+
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 
